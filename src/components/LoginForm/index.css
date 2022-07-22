@@ -50,15 +50,17 @@
   .login-lg-img {
     display: flex;
     min-width: 300px;
-    width: 705px;
+    width: 100%;
     min-height: 100vh;
+    max-width: 703px;
     left: 735px;
     top: 0px;
   }
   .login-image-container {
     order: 2;
     min-width: 300px;
-    width: 705px;
+    width: 100%;
+    max-width: 703px;
     min-height: 100vh;
   }
   .website-logo-container {
