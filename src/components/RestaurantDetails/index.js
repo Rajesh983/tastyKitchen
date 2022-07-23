@@ -5,20 +5,25 @@ import './index.css'
 import RestaurantBanner from '../RestaurantBanner'
 import Header from '../Header'
 import Footer from '../Footer'
+import FoodItemCard from '../FoodItemCard'
 
 class RestaurantDetails extends Component {
-  state = {isLoading: false, restDetails: {}, foodItemsList: []}
+  state = {
+    isLoading: true,
+    restDetails: {},
+    foodItemsList: [],
+    addedToCartList: [],
+  }
 
   componentDidMount() {
     this.getRestaurantDetails()
   }
 
   getRestaurantDetails = async () => {
+    this.setState({isLoading: true})
     const {match} = this.props
     const {params} = match
     const {id} = params
-
-    this.setState({isLoading: true})
 
     const jwtToken = Cookies.get('jwt_token')
 
@@ -52,13 +57,42 @@ class RestaurantDetails extends Component {
       imageUrl: eachItem.image_url,
       name: eachItem.name,
       rating: eachItem.rating,
+      quantity: 1,
     }))
 
     this.setState({
-      isLoading: false,
       restDetails: updatedRestDetails,
       foodItemsList: foodItems,
+      isLoading: false,
     })
+  }
+
+  onAddingToCartList = cartItem => {
+    this.setState(prevState => ({
+      addedToCartList: [...prevState.addedToCartList, cartItem],
+    }))
+  }
+
+  onDecrementingQuantity = id => {
+    const {addedToCartList} = this.state
+    const targetItem = addedToCartList.find(eachObj => eachObj.id === id)
+    let {quantity} = targetItem
+    if (quantity > 1) {
+      quantity -= 1
+    }
+    const newItem = {...targetItem, quantity}
+    const filteredData = addedToCartList.filter(eachItem => eachItem.id !== id)
+    this.setState({addedToCartList: [...filteredData, newItem]})
+  }
+
+  onIncrementingQuantity = id => {
+    const {addedToCartList} = this.state
+    const targetItem = addedToCartList.find(eachObj => eachObj.id === id)
+    let {quantity} = targetItem
+    quantity += 1
+    const newItem = {...targetItem, quantity}
+    const filteredData = addedToCartList.filter(eachItem => eachItem.id !== id)
+    this.setState({addedToCartList: [...filteredData, newItem]})
   }
 
   renderLoader = () => (
@@ -71,9 +105,29 @@ class RestaurantDetails extends Component {
   )
 
   renderDetails = () => {
-    const {restDetails} = this.state
-
-    return <RestaurantBanner restDetails={restDetails} />
+    const {restDetails, foodItemsList, addedToCartList} = this.state
+    return (
+      <>
+        <RestaurantBanner restDetails={restDetails} />
+        <ul className="food-items-list-container">
+          {foodItemsList.map(eachItem => (
+            <FoodItemCard
+              foodItem={eachItem}
+              key={eachItem.id}
+              onAddingToCartList={this.onAddingToCartList}
+              checkRes={addedToCartList.findIndex(
+                eachOne => eachOne.id === eachItem.id,
+              )}
+              quantityCheck={addedToCartList.find(
+                eachOne => eachOne.id === eachItem.id,
+              )}
+              onIncrementingQuantity={this.onIncrementingQuantity}
+              onDecrementingQuantity={this.onDecrementingQuantity}
+            />
+          ))}
+        </ul>
+      </>
+    )
   }
 
   render() {
@@ -81,10 +135,14 @@ class RestaurantDetails extends Component {
     return (
       <>
         <Header />
-        <div className="restaurant-details-bg-container">
-          {isLoading ? this.renderLoader() : this.renderDetails()}
+        <div className="large-container">
+          <div className="restaurant-details-bg-outside-container">
+            <div className="restaurant-details-bg-container">
+              {isLoading ? this.renderLoader() : this.renderDetails()}
+            </div>
+            <Footer />
+          </div>
         </div>
-        <Footer />
       </>
     )
   }

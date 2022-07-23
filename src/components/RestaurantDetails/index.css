@@ -1,3 +1,16 @@
+.restaurant-details-bg-container {
+  width: 100%;
+}
+.restaurant-details-bg-outside-container {
+  width: 100%;
+  max-width: 1000px;
+}
+.large-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 .restaurant-details-loader {
   min-height: 54vh;
   display: flex;
@@ -122,6 +135,7 @@
 @media screen and (min-width: 768px) {
   .name-heading {
     font-size: 36px;
+    line-height: 30px;
   }
   .location,
   .cuisine {
@@ -145,4 +159,20 @@
   .cost-outside-container {
     padding-left: 15px;
   }
+}
+
+@media screen and (min-width: 992px) {
+  .banner-bg-container {
+    padding-bottom: 5px;
+  }
+}
+.food-items-list-container {
+  list-style-type: none;
+  padding-left: 0;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  flex-wrap: wrap;
 }

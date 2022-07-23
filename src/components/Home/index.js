@@ -122,7 +122,6 @@ class Home extends Component {
 
   renderRestaurants = () => {
     const {restaurantsList, activePage, totalPages} = this.state
-
     return restaurantsList.length === 0 ? (
       <div className="no-restaurants-container">
         <h1 className="no-restaurants-heading">No Restaurants Found</h1>
