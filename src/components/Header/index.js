@@ -75,14 +75,14 @@ class Header extends Component {
       <>
         <nav className="navbar">
           <div className="logo-heading-container">
-            <Link to="/">
+            <Link to="/" className="logo-heading-container">
               <img
                 src="https://res.cloudinary.com/dtlqsvj2k/image/upload/v1657517641/TastyKitchen/website-logo_bi1pg3.png"
                 alt="website logo"
                 className="header-logo-img"
               />
+              <h1 className="header-heading">Tasty Kitchens</h1>
             </Link>
-            <h1 className="header-heading">Tasty Kitchens</h1>
           </div>
           <div className="small-devices-container">
             <button

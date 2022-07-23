@@ -6,6 +6,7 @@ import Loader from 'react-loader-spinner'
 import Header from '../Header'
 import CarouselOffers from '../CarouselOffers'
 import RestaurantCard from '../RestaurantCard'
+import Footer from '../Footer'
 
 import './index.css'
 
@@ -215,6 +216,7 @@ class Home extends Component {
                 onChange={this.updatingSearchText}
               />
               {isLoading ? this.renderLoader() : this.renderRestaurants()}
+              <Footer />
             </div>
           </div>
         </div>
