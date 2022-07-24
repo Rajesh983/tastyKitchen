@@ -59,6 +59,7 @@ const FoodItemCard = props => {
             <button
               type="button"
               className="quantity-btn"
+              testid="decrement-count"
               onClick={onClickDecrement}
             >
               <BsDashSquare
@@ -72,6 +73,7 @@ const FoodItemCard = props => {
             <button
               type="button"
               className="quantity-btn"
+              testid="increment-count"
               onClick={onClickIncrement}
             >
               <BsPlusSquare

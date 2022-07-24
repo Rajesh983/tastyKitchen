@@ -68,9 +68,12 @@ class RestaurantDetails extends Component {
   }
 
   onAddingToCartList = cartItem => {
-    this.setState(prevState => ({
-      addedToCartList: [...prevState.addedToCartList, cartItem],
-    }))
+    this.setState(
+      prevState => ({
+        addedToCartList: [...prevState.addedToCartList, cartItem],
+      }),
+      this.onUpdatingCartData,
+    )
   }
 
   onDecrementingQuantity = id => {
@@ -82,7 +85,10 @@ class RestaurantDetails extends Component {
     }
     const newItem = {...targetItem, quantity}
     const filteredData = addedToCartList.filter(eachItem => eachItem.id !== id)
-    this.setState({addedToCartList: [...filteredData, newItem]})
+    this.setState(
+      {addedToCartList: [...filteredData, newItem]},
+      this.onUpdatingCartData,
+    )
   }
 
   onIncrementingQuantity = id => {
@@ -92,7 +98,23 @@ class RestaurantDetails extends Component {
     quantity += 1
     const newItem = {...targetItem, quantity}
     const filteredData = addedToCartList.filter(eachItem => eachItem.id !== id)
-    this.setState({addedToCartList: [...filteredData, newItem]})
+    this.setState(
+      {addedToCartList: [...filteredData, newItem]},
+      this.onUpdatingCartData,
+    )
+  }
+
+  onUpdatingCartData = () => {
+    const {addedToCartList} = this.state
+
+    const updatedCartData = addedToCartList.map(eachCart => ({
+      cost: eachCart.cost,
+      id: eachCart.id,
+      quantity: eachCart.quantity,
+      imageUrl: eachCart.imageUrl,
+      name: eachCart.name,
+    }))
+    localStorage.setItem('cartData', JSON.stringify(updatedCartData))
   }
 
   renderLoader = () => (
