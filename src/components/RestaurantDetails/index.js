@@ -1,18 +1,19 @@
 import {Component} from 'react'
 import Cookies from 'js-cookie'
 import Loader from 'react-loader-spinner'
+
 import './index.css'
 import RestaurantBanner from '../RestaurantBanner'
 import Header from '../Header'
 import Footer from '../Footer'
 import FoodItemCard from '../FoodItemCard'
+import CartContext from '../../Context/CartContext'
 
 class RestaurantDetails extends Component {
   state = {
     isLoading: true,
     restDetails: {},
     foodItemsList: [],
-    addedToCartList: [],
   }
 
   componentDidMount() {
@@ -67,56 +68,6 @@ class RestaurantDetails extends Component {
     })
   }
 
-  onAddingToCartList = cartItem => {
-    this.setState(
-      prevState => ({
-        addedToCartList: [...prevState.addedToCartList, cartItem],
-      }),
-      this.onUpdatingCartData,
-    )
-  }
-
-  onDecrementingQuantity = id => {
-    const {addedToCartList} = this.state
-    const targetItem = addedToCartList.find(eachObj => eachObj.id === id)
-    let {quantity} = targetItem
-    if (quantity > 1) {
-      quantity -= 1
-    }
-    const newItem = {...targetItem, quantity}
-    const filteredData = addedToCartList.filter(eachItem => eachItem.id !== id)
-    this.setState(
-      {addedToCartList: [...filteredData, newItem]},
-      this.onUpdatingCartData,
-    )
-  }
-
-  onIncrementingQuantity = id => {
-    const {addedToCartList} = this.state
-    const targetItem = addedToCartList.find(eachObj => eachObj.id === id)
-    let {quantity} = targetItem
-    quantity += 1
-    const newItem = {...targetItem, quantity}
-    const filteredData = addedToCartList.filter(eachItem => eachItem.id !== id)
-    this.setState(
-      {addedToCartList: [...filteredData, newItem]},
-      this.onUpdatingCartData,
-    )
-  }
-
-  onUpdatingCartData = () => {
-    const {addedToCartList} = this.state
-
-    const updatedCartData = addedToCartList.map(eachCart => ({
-      cost: eachCart.cost,
-      id: eachCart.id,
-      quantity: eachCart.quantity,
-      imageUrl: eachCart.imageUrl,
-      name: eachCart.name,
-    }))
-    localStorage.setItem('cartData', JSON.stringify(updatedCartData))
-  }
-
   renderLoader = () => (
     <div
       testid="restaurant-details-loader"
@@ -127,28 +78,40 @@ class RestaurantDetails extends Component {
   )
 
   renderDetails = () => {
-    const {restDetails, foodItemsList, addedToCartList} = this.state
+    const {restDetails, foodItemsList} = this.state
     return (
-      <>
-        <RestaurantBanner restDetails={restDetails} />
-        <ul className="food-items-list-container">
-          {foodItemsList.map(eachItem => (
-            <FoodItemCard
-              foodItem={eachItem}
-              key={eachItem.id}
-              onAddingToCartList={this.onAddingToCartList}
-              checkRes={addedToCartList.findIndex(
-                eachOne => eachOne.id === eachItem.id,
-              )}
-              quantityCheck={addedToCartList.find(
-                eachOne => eachOne.id === eachItem.id,
-              )}
-              onIncrementingQuantity={this.onIncrementingQuantity}
-              onDecrementingQuantity={this.onDecrementingQuantity}
-            />
-          ))}
-        </ul>
-      </>
+      <CartContext.Consumer>
+        {value => {
+          const {
+            addCartItem,
+            cartContextList,
+            incrementCartItemQuantity,
+            decrementCartItemQuantity,
+          } = value
+          return (
+            <>
+              <RestaurantBanner restDetails={restDetails} />
+              <ul className="food-items-list-container">
+                {foodItemsList.map(eachItem => (
+                  <FoodItemCard
+                    foodItem={eachItem}
+                    key={eachItem.id}
+                    onAddingToCartList={addCartItem}
+                    checkRes={cartContextList.findIndex(
+                      eachOne => eachOne.id === eachItem.id,
+                    )}
+                    quantityCheck={cartContextList.find(
+                      eachOne => eachOne.id === eachItem.id,
+                    )}
+                    onIncrementingQuantity={incrementCartItemQuantity}
+                    onDecrementingQuantity={decrementCartItemQuantity}
+                  />
+                ))}
+              </ul>
+            </>
+          )
+        }}
+      </CartContext.Consumer>
     )
   }
 

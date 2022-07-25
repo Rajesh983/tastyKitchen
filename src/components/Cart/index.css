@@ -129,3 +129,37 @@
     display: none;
   }
 }
+.hr-rule-line {
+  border: 1px dashed #cbd2d9;
+  width: 100%;
+}
+.order-total-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.order-total {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  color: #3e4c59;
+}
+.total-price {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  color: #3e4c59;
+}
+.place-btn-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 100%;
+  align-items: center;
+}
+.small-devices-cart-container {
+  padding: 10px;
+}
