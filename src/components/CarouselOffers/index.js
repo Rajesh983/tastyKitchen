@@ -2,7 +2,7 @@ import {Component} from 'react'
 import Cookies from 'js-cookie'
 import Slider from 'react-slick'
 import Loader from 'react-loader-spinner'
-import './index.css'
+import './index.css';
 
 class CarouselOffers extends Component {
   state = {
