@@ -3,7 +3,7 @@ import {BiRupee} from 'react-icons/bi'
 
 import CartContext from '../../Context/CartContext'
 
-import './index.css'
+import './index.css' ; // css
 
 const CartItemCard = props => {
   const {cartItem} = props
